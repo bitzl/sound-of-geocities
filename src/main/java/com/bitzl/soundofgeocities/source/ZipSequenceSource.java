@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-public class ZipSequenceSource {
+public class ZipSequenceSource implements SequenceSourceStatus {
 
     private final ZipFile zipFile;
     private int invalidCount;
@@ -48,10 +48,12 @@ public class ZipSequenceSource {
         zipFile.close();
     }
 
+    @Override
     public int invalidCount() {
         return invalidCount;
     }
 
+    @Override
     public int ioExceptionCount() {
         return ioExceptionCount;
     }
