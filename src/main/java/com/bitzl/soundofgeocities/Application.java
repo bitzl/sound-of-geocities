@@ -1,5 +1,6 @@
 package com.bitzl.soundofgeocities;
 
+import com.bitzl.soundofgeocities.model.EventCounts;
 import com.bitzl.soundofgeocities.source.ZipSequenceSource;
 import com.bitzl.soundofgeocities.transformations.MapSequence;
 import com.bitzl.soundofgeocities.util.Status;
@@ -9,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collector;
 
 public class Application {
 
