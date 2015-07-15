@@ -1,41 +1,33 @@
 package com.bitzl.soundofgeocities;
 
-import com.bitzl.soundofgeocities.source.Song;
-import com.bitzl.soundofgeocities.source.SongIterator;
-import rx.Observable;
-import rx.Subscriber;
+import com.bitzl.soundofgeocities.source.ZipSequenceSource;
+import com.bitzl.soundofgeocities.transformations.MapSequence;
 
-import java.io.File;
-import java.util.Iterator;
+import java.io.IOException;
 
 public class Application {
 
-    class Songs implements Observable.OnSubscribe<Song> {
-        private final Iterator<Song> songIterator;
-        public Songs(File file) {
-            songIterator = new SongIterator(new File(""));
-        }
-        public void call(Subscriber<? super Song> subscriber) {
-            if (songIterator.hasNext()) {
-                subscriber.onNext(songIterator.next());
-            }
-            else {
-                subscriber.onCompleted();
-            }
-        }
-    }
-
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Application application = new Application();
         application.main();
     }
 
-    public void main() {
-        Observable
-                .create(new Songs(new File("midis.zip")))
-                .count()
-                .finallyDo(System.out::println);
+    public void main() throws IOException {
+        final String filename = "D:/Daten/2009.GeoCities.MIDI.ArchiveTeam.zip";
+        final long start = System.currentTimeMillis();
+        ZipSequenceSource source = new ZipSequenceSource(filename);
+
+        long count = source
+                .stream()
+                .parallel()
+                .flatMap(MapSequence::toMidiEvent)
+                .count();
+
+        long duration = (System.currentTimeMillis() - start) / 1000;
+        System.out.println("Count: " + count + ".");
+        System.out.println("Invalid " + source.invalidCount() + ". IOException: " + source.ioExceptionCount() + ".");
+        double minutes = duration / 60.0;
+        System.out.println("Took " + duration + " s (" + minutes + "min).");
     }
 
 }
