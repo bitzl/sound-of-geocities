@@ -12,18 +12,17 @@ import java.util.stream.Stream;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
-public class ZipSequenceSource implements SequenceSourceStatus {
+public class ZipSequenceSource implements SequenceSource {
 
     private final ZipFile zipFile;
-    private int invalidCount;
-    private int ioExceptionCount;
+    private SequenceSourceStatus status;
 
     public ZipSequenceSource(String filename) throws IOException {
         zipFile = new ZipFile(new File(filename));
-        invalidCount = 0;
-        ioExceptionCount = 0;
+        status = new SequenceSourceStatus();
     }
 
+    @Override
     public Stream<Sequence> stream() {
         return zipFile.stream()
                 .filter(zipEntry -> zipEntry.getName().toLowerCase().endsWith(".mid"))
@@ -33,29 +32,23 @@ public class ZipSequenceSource implements SequenceSourceStatus {
                     try {
                         return midiFileReader.getSequence(zipFile.getInputStream(zipEntry));
                     } catch (InvalidMidiDataException e) {
-                        invalidCount++;
+                        status.invalid();
                     } catch (IOException e) {
-                        ioExceptionCount++;
+                        status.ioException();
                     }
                     return null;
                 })
-                .filter(sequence -> {
-                    return sequence != null;
-                });
+                .filter(sequence -> sequence != null);
     }
 
+    @Override
     public void close() throws IOException {
         zipFile.close();
     }
 
     @Override
-    public int invalidCount() {
-        return invalidCount;
-    }
-
-    @Override
-    public int ioExceptionCount() {
-        return ioExceptionCount;
+    public SequenceSourceStatus getStatus() {
+        return status;
     }
 
 }

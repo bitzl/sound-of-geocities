@@ -20,7 +20,7 @@ public class Status {
     public void round(SequenceSourceStatus status) {
         System.out.println("Done.");
         long duration = (System.currentTimeMillis() - last) / 1000;
-        System.out.println("\tInvalid " + status.invalidCount() + ". IOException: " + status.ioExceptionCount() + ".");
+        System.out.println("\tInvalid " + status.getInvalidCount() + ". IOException: " + status.getIoExceptionCount() + ".");
         double minutes = duration / 60.0;
         System.out.println("\tTook " + duration + " s (" + minutes + "min).");
         System.out.println();
