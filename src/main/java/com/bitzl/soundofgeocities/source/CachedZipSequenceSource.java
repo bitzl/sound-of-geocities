@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.stream.Stream;
 
+@Deprecated
 public class CachedZipSequenceSource implements SequenceSource {
 
     private final Sequence[] sequences;
