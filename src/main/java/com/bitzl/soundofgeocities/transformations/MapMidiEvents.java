@@ -1,6 +1,6 @@
 package com.bitzl.soundofgeocities.transformations;
 
-public class MapMidiEvenst {
+public class MapMidiEvents {
 
     public static void toEventCounts() {
         // TODO implement.
