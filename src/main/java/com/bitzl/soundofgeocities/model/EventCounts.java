@@ -1,6 +1,6 @@
 package com.bitzl.soundofgeocities.model;
 
-
+@Deprecated
 public class EventCounts {
 
     private long all;
