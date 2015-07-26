@@ -12,7 +12,7 @@ public class Status {
     public Status() {
         start = System.currentTimeMillis();
         last = start;
-        showIOStatus = true;
+        showIOStatus = false;
     }
 
     public void printStart(String what) {
@@ -29,6 +29,13 @@ public class Status {
         System.out.println("\tTook " + duration + " s (" + minutes + "min).");
         System.out.println();
         last = System.currentTimeMillis();
+    }
+
+    public void round() {
+        if (showIOStatus == true) {
+            throw new IllegalStateException("You chose not to show source status on the fly.");
+        }
+        round(null);
     }
 
     public void done() {
