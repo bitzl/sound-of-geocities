@@ -18,7 +18,11 @@ public class ZipSequenceSource implements SequenceSource {
     private SequenceSourceStatus status;
 
     public ZipSequenceSource(String filename) throws IOException {
-        zipFile = new ZipFile(new File(filename));
+        this(new File(filename));
+    }
+
+    public ZipSequenceSource(File source) throws IOException {
+        zipFile = new ZipFile(source);
         status = new SequenceSourceStatus();
     }
 
