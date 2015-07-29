@@ -1,5 +1,6 @@
 # Sound of Geocities
 
+[![Build Status](https://travis-ci.org/bitzl/sound-of-geocities.svg)](https://travis-ci.org/bitzl/sound-of-geocities)
 [![codecov.io](http://codecov.io/github/bitzl/sound-of-geocities/coverage.svg?branch=master)](http://codecov.io/github/bitzl/sound-of-geocities?branch=master)
 
 
