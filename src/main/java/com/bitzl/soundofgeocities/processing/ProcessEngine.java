@@ -7,10 +7,11 @@ import com.bitzl.soundofgeocities.util.Status;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class ProcessEngine {
 
-    private final File source;
+    private final SequenceSource sequenceSource;
 
     private Map<String, Processor> processors;
 
@@ -18,16 +19,18 @@ public class ProcessEngine {
 
     private Status status;
 
-    public ProcessEngine(File source) {
-        this.source = source;
+    public ProcessEngine(SequenceSource sequenceSource) {
+        this.sequenceSource = sequenceSource;
         this.processors = new HashMap<>();
         this.results = new HashMap<>();
         this.status = new Status();
     }
 
     private Object execute(Processor processor) throws IOException {
-        SequenceSource sequenceSource = new ZipSequenceSource(source);
-        return processor.process(sequenceSource.stream());
+        Stream stream = sequenceSource.stream();
+        Object result = processor.process(stream);
+        stream.close();
+        return result;
     }
 
     public void register(String name, Processor processor) {
@@ -46,6 +49,10 @@ public class ProcessEngine {
             status.round();
         }
         status.done();
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public Map<String, Object> getResults() {

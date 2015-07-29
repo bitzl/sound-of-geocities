@@ -2,6 +2,7 @@ package com.bitzl.soundofgeocities;
 
 import com.bitzl.soundofgeocities.processing.counting.EventCountingProcessor;
 import com.bitzl.soundofgeocities.processing.ProcessEngine;
+import com.bitzl.soundofgeocities.source.ZipSequenceSource;
 import com.bitzl.soundofgeocities.util.Status;
 import com.google.gson.Gson;
 
@@ -18,15 +19,15 @@ public class Application {
 
     // 384569450 Events in total
     public void main() throws IOException {
-        final String filename = "D:/Daten/2009.GeoCities.MIDI.ArchiveTeam.zip";
-//        final String filename = "D:/Daten/MIDI-Test.zip";
+//        final String filename = "D:/Daten/2009.GeoCities.MIDI.ArchiveTeam.zip";
+        final String filename = "D:/Daten/MIDI-Test.zip";
 
 //        RuntimeMXBean bean = ManagementFactory.getRuntimeMXBean();
 //        for (String inputArgument : bean.getInputArguments()) {
 //            System.out.println(inputArgument);
 //        }
 
-        ProcessEngine processEngine = new ProcessEngine(new File(filename));
+        ProcessEngine processEngine = new ProcessEngine(new ZipSequenceSource(new File(filename)));
         processEngine.register("Count Midi Events", new EventCountingProcessor());
         processEngine.process();
 

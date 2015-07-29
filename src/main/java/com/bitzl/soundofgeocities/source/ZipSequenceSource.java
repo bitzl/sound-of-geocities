@@ -10,16 +10,18 @@ import java.util.zip.ZipFile;
 
 public class ZipSequenceSource implements SequenceSource {
 
-    private final ZipFile zipFile;
+    private final File source;
+
     private SequenceSourceStatus status;
 
     public ZipSequenceSource(File source) throws IOException {
-        zipFile = new ZipFile(source);
-        status = new SequenceSourceStatus();
+        this.source = source;
     }
 
     @Override
-    public Stream<Sequence> stream() {
+    public Stream<Sequence> stream() throws IOException {
+        ZipFile zipFile = new ZipFile(source);
+        status = new SequenceSourceStatus();
         return zipFile.stream()
                 .filter(zipEntry -> zipEntry.getName().toLowerCase().endsWith(".mid"))
                 .map(zipEntry -> {
@@ -33,11 +35,6 @@ public class ZipSequenceSource implements SequenceSource {
                     return null;
                 })
                 .filter(sequence -> sequence != null);
-    }
-
-    @Override
-    public void close() throws IOException {
-        zipFile.close();
     }
 
     @Override
