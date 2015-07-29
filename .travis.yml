@@ -9,12 +9,5 @@ env:
    #   via the "travis encrypt" command using the project repo's public key
    - secure: "2DsTc/0roRQxkPaWUvna4T82wEhYt6tycVhaLZcdHBZyCjgV1NlsvDhXMdizveCa1aCMpEp8WmwhuMfkYNo3bWr4Br0BCFo75Y4lfupX02zZTQWakV7FKEA/QVZXM7bRkxXS5fK8EkB4SQzbVvC26XItRMmFAPYbW5SuGcwXo1Jt9emvtffemDISIJKWQjQV+OBaLT82tb7uB29x94b/jk7D17rOuBon3WIty81zvnepeCVFOlM9/BXQkzT58PFnu0YtKPMvdMUpPTYZCXYSQ5VGlmBJulOk7fyk/xn7b2a4Rz4tRZV0GmbBhs6dNJkfB83yvKy+a/2gvEz3TTkZFNznSlNBbEIfvZmdKHgNz7h6lv/RrLOnZSTuJMvgL1HZgJy9gVlrPYAsjf6iVHP0h8pjvKD8pXP90O3U8YFF4LHvVqpIuVeyWL51j5wXiNPTQKlcV6pQgkhcMRo5IQsoAuQ/KJUgG/V49rsVzkytl54u98VtiQcgUMm9AYNuNvtDKxG7p3PK+P6b82Xtq9q5w8LlrBECeaT/UCbAvKpskQypbQYX+8FXpIgOY6rNqZBGM+jNoYrxnPsZmY81Lg+EzC0rbAhwGWyArl8s1Qz2hlBf4AtzvAHzPFu55ifSCl0B4R9zAJdhFrIyvh3oHNWoDhjmgZBd6Zu2geiCU8+nBIw="
 
-addons:
-  coverity_scan:
-    project:
-      name: "bitzl/sound-of-geocities"
-      description: "Build submitted via Travis CI"
-    notification_email: marcus@bitzl.com
-    build_command_prepend: "mvn clean"
-    build_command:   "mvn -DskipTests=true compile"
-    branch_pattern: coverity_scan
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
