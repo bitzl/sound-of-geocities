@@ -12,9 +12,11 @@ import javax.sound.midi.Sequence;
 import java.io.IOException;
 import java.util.stream.Stream;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ProcessEngineTest {
 
@@ -44,5 +46,18 @@ public class ProcessEngineTest {
         verify(processor).process(any());
     }
 
+    @Test(expected = RuntimeException.class)
+    public void testEnginePreventsDoubleRegistration() {
+        processEngine.register("nice processor", mock(Processor.class));
+        processEngine.register("nice processor", mock(Processor.class));
+    }
 
+    @Test
+    public void testEngineSavesResult() throws IOException {
+        Processor processor = mock(Processor.class);
+        when(processor.process(any())).thenReturn("akdhasdkhasd");
+        processEngine.register("nice processor", processor);
+        processEngine.process();
+        assertEquals("akdhasdkhasd", processEngine.getResults().get("nice processor"));
+    }
 }
