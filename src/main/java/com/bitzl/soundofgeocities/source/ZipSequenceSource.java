@@ -13,10 +13,6 @@ public class ZipSequenceSource implements SequenceSource {
     private final ZipFile zipFile;
     private SequenceSourceStatus status;
 
-    public ZipSequenceSource(String filename) throws IOException {
-        this(new File(filename));
-    }
-
     public ZipSequenceSource(File source) throws IOException {
         zipFile = new ZipFile(source);
         status = new SequenceSourceStatus();
